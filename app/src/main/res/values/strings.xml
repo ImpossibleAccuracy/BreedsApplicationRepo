@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Breeds Application</string>
+    <string name="title_home">Собаки</string>
+    <string name="title_favorite">Лучшее</string>
+
+    <string name="sub_breeds">Подвидов: %d</string>
+    <string name="no_sub_breeds">Нет подвидов</string>
+    <string name="sort">Сортировка</string>
+    <string name="sort_dialog_title">Сортировка</string>
+
+    <string-array name="sort_variants">
+        <item>По имени</item>
+        <item>По кол-ву подпород</item>
+    </string-array>
+</resources>
