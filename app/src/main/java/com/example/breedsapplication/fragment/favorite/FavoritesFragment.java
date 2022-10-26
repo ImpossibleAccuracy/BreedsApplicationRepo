@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.breedsapplication.databinding.FragmentFavoritesBinding;
-import com.example.breedsapplication.model.Breed;
 
 public class FavoritesFragment extends Fragment {
     private FragmentFavoritesBinding binding;

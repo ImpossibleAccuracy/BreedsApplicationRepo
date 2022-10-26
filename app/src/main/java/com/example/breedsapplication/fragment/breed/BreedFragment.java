@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.breedsapplication.R;
 import com.example.breedsapplication.activity.breed.SubBreedActivity;
+import com.example.breedsapplication.activity.image.ImageActivity;
 import com.example.breedsapplication.databinding.FragmentBreedBinding;
 import com.example.breedsapplication.fragment.breed.adapter.BreedRecyclerViewAdapter;
 import com.example.breedsapplication.model.Breed;
@@ -128,8 +129,16 @@ public class BreedFragment extends Fragment implements MenuProvider {
     }
 
     private void onBreedSelected(int pos, Breed breed, View v) {
-        Intent intent = new Intent(getActivity(), SubBreedActivity.class);
-        intent.putExtra(Breed.class.getSimpleName(), breed);
+        Intent intent;
+        if (breed.getSubBreeds() == null ||
+                breed.getSubBreeds().size() == 0 ||
+                breed.getSubBreeds().isEmpty()) {
+            intent = new Intent(getActivity(), ImageActivity.class);
+            intent.putExtra(Breed.class.getSimpleName(), breed.getName());
+        } else {
+            intent = new Intent(getActivity(), SubBreedActivity.class);
+            intent.putExtra(Breed.class.getSimpleName(), breed);
+        }
         startActivity(intent);
     }
 }
