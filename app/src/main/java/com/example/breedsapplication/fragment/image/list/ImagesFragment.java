@@ -1,4 +1,4 @@
-package com.example.breedsapplication.fragment.image;
+package com.example.breedsapplication.fragment.image.list;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.example.breedsapplication.R;
 import com.example.breedsapplication.databinding.FragmentImagesBinding;
-import com.example.breedsapplication.fragment.image.adapter.GridSpacingItemDecoration;
-import com.example.breedsapplication.fragment.image.adapter.ImageRecyclerViewAdapter;
+import com.example.breedsapplication.fragment.image.list.adapter.GridSpacingItemDecoration;
+import com.example.breedsapplication.fragment.image.list.adapter.ImageRecyclerViewAdapter;
 
 import java.util.List;
 import java.util.concurrent.Executor;

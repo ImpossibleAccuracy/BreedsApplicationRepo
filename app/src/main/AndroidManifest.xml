@@ -42,7 +42,15 @@
         </activity>
 
         <activity
-            android:name=".activity.image.ImageActivity"
+            android:name=".activity.image.list.ImagesActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+
+        <activity
+            android:name=".activity.image.single.ImageActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

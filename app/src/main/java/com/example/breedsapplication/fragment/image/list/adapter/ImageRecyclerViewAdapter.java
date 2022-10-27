@@ -1,4 +1,4 @@
-package com.example.breedsapplication.fragment.image.adapter;
+package com.example.breedsapplication.fragment.image.list.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -60,6 +61,8 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageViewHold
         Glide.with(getContext())
                 .load(image)
                 .into(binding.image);
+
+        ViewCompat.setTransitionName(binding.image, ("TR_IMAGE_" + image));
 
         binding.getRoot().setOnClickListener(v -> {
             if (onItemSelected != null) {

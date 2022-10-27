@@ -1,4 +1,4 @@
-package com.example.breedsapplication.fragment.image;
+package com.example.breedsapplication.fragment.image.list;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

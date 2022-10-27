@@ -9,6 +9,7 @@
     <string name="sort_dialog_title">Сортировка</string>
     <string name="no_images_primary">Nothing loaded</string>
     <string name="no_images_secondary">So wait, do they even exist?</string>
+    <string name="transition_app_bar">AppBar</string>
 
     <string-array name="sort_variants">
         <item>По имени</item>

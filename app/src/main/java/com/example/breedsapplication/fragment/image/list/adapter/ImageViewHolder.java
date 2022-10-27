@@ -1,4 +1,4 @@
-package com.example.breedsapplication.fragment.image.adapter;
+package com.example.breedsapplication.fragment.image.list.adapter;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
