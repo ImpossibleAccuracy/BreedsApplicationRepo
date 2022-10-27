@@ -12,9 +12,9 @@ public interface BreedsService {
     @GET("breeds/list/all")
     Call<BreedResponse> listBreeds();
 
-    @GET("breed/list/{breed}/list")
+    @GET("breed/{breed}/list")
     Call<SubBreedResponse> listSubBreeds(@Path("breed") String breed);
 
-    @GET("breed/list/{breed}/images")
+    @GET("breed/{breed}/images")
     Call<ImageResponse> listBreedImages(@Path("breed") String breed);
 }

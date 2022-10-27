@@ -26,8 +26,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
 
-        BottomNavigationView navView = findViewById(R.id.bottom_nav_view);
-
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_breed, R.id.navigation_favorites)
                 .build();

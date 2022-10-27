@@ -10,13 +10,13 @@ import androidx.core.view.WindowCompat;
 
 import com.example.breedsapplication.R;
 import com.example.breedsapplication.databinding.ActivityImageBinding;
-import com.example.breedsapplication.fragment.image.ImageFragment;
-import com.example.breedsapplication.model.Breed;
+import com.example.breedsapplication.fragment.image.ImagesFragment;
 
 public class ImageActivity extends AppCompatActivity {
     private ActivityImageBinding binding;
 
     private String breed;
+    private String subBreed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +28,8 @@ public class ImageActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         Intent intent = getIntent();
-        this.breed = intent.getStringExtra(Breed.class.getSimpleName());
+        this.breed = intent.getStringExtra(ImagesFragment.BREED_EXTRA_KEY);
+        this.subBreed = intent.getStringExtra(ImagesFragment.SUB_BREED_EXTRA_KEY);
 
         setSupportActionBar(binding.toolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -39,7 +40,7 @@ public class ImageActivity extends AppCompatActivity {
         }
 
         if (savedInstanceState == null) {
-            ImageFragment fragment = ImageFragment.newInstance(breed);
+            ImagesFragment fragment = ImagesFragment.newInstance(breed, subBreed);
 
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, fragment)

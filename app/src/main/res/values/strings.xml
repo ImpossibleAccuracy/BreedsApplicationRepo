@@ -7,6 +7,8 @@
     <string name="no_sub_breeds">Нет подвидов</string>
     <string name="sort">Сортировка</string>
     <string name="sort_dialog_title">Сортировка</string>
+    <string name="no_images_primary">Nothing loaded</string>
+    <string name="no_images_secondary">So wait, do they even exist?</string>
 
     <string-array name="sort_variants">
         <item>По имени</item>
