@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import lombok.Data;
-
 public class BreedResponse implements Serializable {
     private Map<String, List<String>> message;
     private String status;

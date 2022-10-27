@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.breedsapplication.databinding.ItemImageBinding;
 
 import java.util.List;
@@ -54,15 +55,17 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageViewHold
     @Override
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
         String image = images.get(position);
-
         ItemImageBinding binding = holder.getBinding();
 
-        binding.getRoot().setOnClickListener(
-                v -> {
-                    if (onItemSelected != null) {
-                        onItemSelected.onItemSelected(position, image, v);
-                    }
-                });
+        Glide.with(getContext())
+                .load(image)
+                .into(binding.image);
+
+        binding.getRoot().setOnClickListener(v -> {
+            if (onItemSelected != null) {
+                onItemSelected.onItemSelected(position, image, v);
+            }
+        });
     }
 
     @Override

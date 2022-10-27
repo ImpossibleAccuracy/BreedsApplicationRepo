@@ -40,12 +40,17 @@ public class ImagesViewModel extends ViewModel {
                 onLoadError((imageResponse == null) ? null : imageResponse.getStatus());
             }
 
-            List<String> s = imageResponse.getMessage()
-                    .stream()
-                    .filter(image -> image
-                            .split("/")[4]
-                            .endsWith(subBreed))
-                    .collect(Collectors.toList());
+            List<String> s;
+            if (subBreed == null) {
+                s = imageResponse.getMessage();
+            } else {
+                s = imageResponse.getMessage()
+                        .stream()
+                        .filter((String image) -> image
+                                .split("/")[4]
+                                .endsWith(subBreed))
+                        .collect(Collectors.toList());
+            }
 
             imageList.postValue(s);
         } catch (IOException e) {
