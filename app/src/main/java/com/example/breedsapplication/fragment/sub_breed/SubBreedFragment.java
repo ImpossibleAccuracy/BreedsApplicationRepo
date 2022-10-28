@@ -11,8 +11,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.breedsapplication.adapter.holder.SubBreedRecyclerViewAdapter;
 import com.example.breedsapplication.databinding.FragmentSubBreedBinding;
-import com.example.breedsapplication.fragment.sub_breed.adapter.SubBreedRecyclerViewAdapter;
 import com.example.breedsapplication.model.Breed;
 
 public class SubBreedFragment extends Fragment {

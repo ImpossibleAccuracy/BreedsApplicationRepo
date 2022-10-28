@@ -1,4 +1,4 @@
-package com.example.breedsapplication.fragment.image.list.adapter;
+package com.example.breedsapplication.adapter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -18,6 +18,7 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.breedsapplication.activity.image.ImagesActivity;
+import com.example.breedsapplication.adapter.holder.ImageViewHolder;
 import com.example.breedsapplication.databinding.ItemImageBinding;
 
 import java.util.List;

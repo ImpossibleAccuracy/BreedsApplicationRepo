@@ -21,8 +21,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.breedsapplication.R;
 import com.example.breedsapplication.activity.breed.SubBreedActivity;
 import com.example.breedsapplication.activity.image.ImagesActivity;
+import com.example.breedsapplication.adapter.BreedRecyclerViewAdapter;
 import com.example.breedsapplication.databinding.FragmentBreedBinding;
-import com.example.breedsapplication.fragment.breed.adapter.BreedRecyclerViewAdapter;
 import com.example.breedsapplication.model.Breed;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 

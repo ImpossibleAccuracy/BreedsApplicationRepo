@@ -16,8 +16,8 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.breedsapplication.R;
 import com.example.breedsapplication.activity.image.ImagesActivity;
+import com.example.breedsapplication.adapter.ImageListAdapter;
 import com.example.breedsapplication.databinding.FragmentImageBinding;
-import com.example.breedsapplication.fragment.image.single.adapter.ImageListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

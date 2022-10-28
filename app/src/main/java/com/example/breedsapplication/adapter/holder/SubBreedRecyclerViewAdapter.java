@@ -1,4 +1,4 @@
-package com.example.breedsapplication.fragment.sub_breed.adapter;
+package com.example.breedsapplication.adapter.holder;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.breedsapplication.adapter.holder.SubBreedViewHolder;
 import com.example.breedsapplication.databinding.ItemSubBreedBinding;
 import com.example.breedsapplication.fragment.sub_breed.SubBreedFragment;
 import com.example.breedsapplication.model.Breed;

@@ -10,6 +10,7 @@
     <string name="no_images_primary">Nothing loaded</string>
     <string name="no_images_secondary">So wait, do they even exist?</string>
     <string name="transition_app_bar">AppBar</string>
+    <string name="like">Like</string>
 
     <string-array name="sort_variants">
         <item>По имени</item>

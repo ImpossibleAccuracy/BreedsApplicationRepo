@@ -1,4 +1,4 @@
-package com.example.breedsapplication.fragment.image.list.adapter;
+package com.example.breedsapplication.adapter.decoration;
 
 import android.graphics.Rect;
 import android.view.View;

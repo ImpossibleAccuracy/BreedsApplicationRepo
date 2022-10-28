@@ -1,4 +1,4 @@
-package com.example.breedsapplication.fragment.image.single.adapter;
+package com.example.breedsapplication.adapter;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

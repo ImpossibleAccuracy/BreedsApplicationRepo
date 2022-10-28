@@ -18,9 +18,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.breedsapplication.R;
 import com.example.breedsapplication.activity.image.ImagesActivity;
+import com.example.breedsapplication.adapter.ImageRecyclerViewAdapter;
+import com.example.breedsapplication.adapter.decoration.GridSpacingItemDecoration;
 import com.example.breedsapplication.databinding.FragmentImagesBinding;
-import com.example.breedsapplication.fragment.image.list.adapter.GridSpacingItemDecoration;
-import com.example.breedsapplication.fragment.image.list.adapter.ImageRecyclerViewAdapter;
 import com.example.breedsapplication.fragment.image.single.ImageFragment;
 
 import java.util.ArrayList;
