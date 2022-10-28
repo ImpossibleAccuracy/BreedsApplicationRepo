@@ -1,39 +1,35 @@
 package com.example.breedsapplication.fragment.breed;
 
-import android.content.Intent;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.breedsapplication.R;
-import com.example.breedsapplication.activity.breed.SubBreedActivity;
-import com.example.breedsapplication.activity.image.ImagesActivity;
 import com.example.breedsapplication.adapter.BreedRecyclerViewAdapter;
+import com.example.breedsapplication.adapter.decoration.DividerItemDecoration;
 import com.example.breedsapplication.databinding.FragmentBreedBinding;
 import com.example.breedsapplication.model.Breed;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.Comparator;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-public class BreedFragment extends Fragment implements MenuProvider {
+public class BreedFragment extends Fragment {
     private BreedViewModel viewModel;
     private FragmentBreedBinding binding;
     private BreedRecyclerViewAdapter adapter;
+
+    private BreedRecyclerViewAdapter.OnItemSelected onItemSelected;
 
     private final Handler mHandler = new Handler(Looper.getMainLooper());
     private final Executor executor = Executors.newSingleThreadExecutor();
@@ -49,10 +45,11 @@ public class BreedFragment extends Fragment implements MenuProvider {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentBreedBinding.inflate(inflater, container, false);
+        final Context context = requireContext();
 
-        adapter = new BreedRecyclerViewAdapter(getContext());
+        adapter = new BreedRecyclerViewAdapter(context);
         // TODO: Fragment should notify the activity that item has been selected.
-        adapter.setOnItemSelectedListener(this::onBreedSelected);
+        adapter.setOnItemSelectedListener(onItemSelected);
         viewModel.getBreeds().observe(
                 getViewLifecycleOwner(), b -> {
                     if (b != null) {
@@ -65,7 +62,9 @@ public class BreedFragment extends Fragment implements MenuProvider {
 
         binding.recyclerView.setAdapter(adapter);
         binding.recyclerView.setLayoutManager(
-                new LinearLayoutManager(getContext()));
+                new LinearLayoutManager(context));
+        binding.recyclerView.addItemDecoration(
+                new DividerItemDecoration(context));
 
         return binding.getRoot();
     }
@@ -76,69 +75,24 @@ public class BreedFragment extends Fragment implements MenuProvider {
         if (viewModel.getBreeds().getValue() == null) {
             executor.execute(viewModel::loadBreeds);
         }
-
-        requireActivity().addMenuProvider(this);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
-        requireActivity().removeMenuProvider(this);
-    }
-
-    @Override
-    public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.main_toolbar_menu, menu);
-    }
-
-    @Override
-    public boolean onMenuItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.menu_sort) {
-            showSortDialog();
-            return true;
-        }
-        return false;
-    }
-
-    private void showSortDialog() {
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
-        builder.setTitle(R.string.sort_dialog_title);
-        builder.setItems(R.array.sort_variants, (dialogInterface, i) -> {
-            Comparator<Breed> comparator;
-            switch (i) {
-                case 0:
-                    comparator = new Breed.TitleComparator();
-                    break;
-                case 1:
-                    comparator = new Breed.SubListSizeComparator().reversed();
-                    break;
-                default:
-                    throw new NullPointerException("Unknown sort type.");
-            }
-
-            executor.execute(() -> sortBreeds(comparator));
-        });
-
-        builder.show();
     }
 
     private void sortBreeds(Comparator<Breed> comparator) {
+        // TODO: remove on release ver
         viewModel.sortBreeds(comparator);
         mHandler.post(adapter::notifyDataSetChanged);
     }
 
-    private void onBreedSelected(int pos, Breed breed, View v) {
-        Intent intent;
-        if (breed.getSubBreeds() == null ||
-                breed.getSubBreeds().size() == 0 ||
-                breed.getSubBreeds().isEmpty()) {
-            intent = new Intent(getActivity(), ImagesActivity.class);
-            intent.putExtra(Breed.class.getSimpleName(), breed.getName());
-        } else {
-            intent = new Intent(getActivity(), SubBreedActivity.class);
-            intent.putExtra(Breed.class.getSimpleName(), breed);
+    public void setOnItemSelected(BreedRecyclerViewAdapter.OnItemSelected onItemSelected) {
+        this.onItemSelected = onItemSelected;
+        if (adapter != null) {
+            adapter.setOnItemSelectedListener(onItemSelected);
         }
-        startActivity(intent);
     }
 }

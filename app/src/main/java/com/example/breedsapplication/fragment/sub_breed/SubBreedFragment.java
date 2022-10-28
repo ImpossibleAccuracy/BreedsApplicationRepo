@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.breedsapplication.adapter.decoration.DividerItemDecoration;
 import com.example.breedsapplication.adapter.holder.SubBreedRecyclerViewAdapter;
 import com.example.breedsapplication.databinding.FragmentSubBreedBinding;
 import com.example.breedsapplication.model.Breed;
@@ -45,6 +47,21 @@ public class SubBreedFragment extends Fragment {
         adapter.setOnItemSelectedListener(onItemSelected);
     }
 
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        binding = FragmentSubBreedBinding.inflate(inflater);
+
+        binding.recyclerView.setAdapter(adapter);
+        binding.recyclerView.setLayoutManager(
+                new LinearLayoutManager(getContext()));
+        binding.recyclerView.addItemDecoration(
+                new DividerItemDecoration(requireContext()));
+
+        return binding.getRoot();
+    }
+
     @SuppressLint("NotifyDataSetChanged")
     public void setBreed(Breed breed) {
         this.breed = breed;
@@ -59,19 +76,6 @@ public class SubBreedFragment extends Fragment {
         if (adapter != null) {
             adapter.setOnItemSelectedListener(onItemSelected);
         }
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        binding = FragmentSubBreedBinding.inflate(inflater);
-
-        binding.recyclerView.setAdapter(adapter);
-        binding.recyclerView.setLayoutManager(
-                new LinearLayoutManager(getContext()));
-
-        return binding.getRoot();
     }
 
     public interface OnItemSelected {

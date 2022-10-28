@@ -16,6 +16,8 @@ import com.example.breedsapplication.fragment.sub_breed.SubBreedFragment;
 import com.example.breedsapplication.model.Breed;
 
 public class SubBreedActivity extends AppCompatActivity implements SubBreedFragment.OnItemSelected {
+    public static final String BREED_EXTRA_KEY = "BreedKey";
+
     private ActivitySubBreedBinding binding;
 
     private Breed breed;
@@ -30,7 +32,7 @@ public class SubBreedActivity extends AppCompatActivity implements SubBreedFragm
         setContentView(binding.getRoot());
 
         Intent intent = getIntent();
-        this.breed = (Breed) intent.getSerializableExtra(Breed.class.getSimpleName());
+        this.breed = (Breed) intent.getSerializableExtra(BREED_EXTRA_KEY);
 
         setSupportActionBar(binding.toolbar);
         ActionBar actionBar = getSupportActionBar();

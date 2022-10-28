@@ -53,6 +53,22 @@ public class ImagesFragment extends Fragment implements ImageRecyclerViewAdapter
         return imageFragment;
     }
 
+    public String getBreed() {
+        return breed;
+    }
+
+    public void setBreed(String breed) {
+        this.breed = breed;
+    }
+
+    public String getSubBreed() {
+        return subBreed;
+    }
+
+    public void setSubBreed(String subBreed) {
+        this.subBreed = subBreed;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle state) {
         super.onCreate(state);

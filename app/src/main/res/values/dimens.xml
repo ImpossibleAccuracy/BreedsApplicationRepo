@@ -6,4 +6,5 @@
 
     <dimen name="navigation_bar_height">48dp</dimen>
     <dimen name="grid_spacing">8dp</dimen>
+    <dimen name="divider_margins">12dp</dimen>
 </resources>
