@@ -2,6 +2,7 @@ package com.example.breedsapplication.fragment.image.list;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -191,8 +192,10 @@ public class ImagesFragment extends Fragment implements ImageRecyclerViewAdapter
     }
 
     private void prepareTransitions() {
-        setExitTransition(TransitionInflater.from(getContext())
-                .inflateTransition(R.transition.grid_exit_transition));
+        Transition transition =
+                TransitionInflater.from(getContext())
+                        .inflateTransition(R.transition.grid_exit_transition);
+        setExitTransition(transition);
 
         setExitSharedElementCallback(
                 new SharedElementCallback() {
