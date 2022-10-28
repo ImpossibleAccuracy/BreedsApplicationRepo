@@ -13,16 +13,19 @@ import com.example.breedsapplication.R;
 import com.example.breedsapplication.databinding.ActivityImageBinding;
 import com.example.breedsapplication.fragment.image.single.ImageFragment;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ImageActivity extends AppCompatActivity {
     public static final String BREED_EXTRA_KEY = "BreedKey";
     public static final String IMAGE_EXTRA_KEY = "ImageKey";
-    public static final String TRANSITION_EXTRA_KEY = "TransitionKey";
+    public static final String IMAGE_LIST_EXTRA_KEY = "ImageListKey";
 
     private ActivityImageBinding binding;
 
     private String image;
     private String breed;
-    private String imageTransitionName;
+    private ArrayList<String> images;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,9 +39,7 @@ public class ImageActivity extends AppCompatActivity {
         Intent intent = getIntent();
         this.image = intent.getStringExtra(IMAGE_EXTRA_KEY);
         this.breed = intent.getStringExtra(BREED_EXTRA_KEY);
-
-        Bundle extras = getIntent().getExtras();
-        this.imageTransitionName = extras.getString(TRANSITION_EXTRA_KEY);
+        this.images = intent.getStringArrayListExtra(IMAGE_LIST_EXTRA_KEY);
 
         setSupportActionBar(binding.toolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -49,7 +50,7 @@ public class ImageActivity extends AppCompatActivity {
         }
 
         if (savedInstanceState == null) {
-            ImageFragment fragment = ImageFragment.newInstance(image, imageTransitionName);
+            ImageFragment fragment = ImageFragment.newInstance(image, images);
 
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, fragment)

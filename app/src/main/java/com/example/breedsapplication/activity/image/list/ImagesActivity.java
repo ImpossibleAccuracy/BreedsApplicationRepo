@@ -17,6 +17,9 @@ import com.example.breedsapplication.databinding.ActivityImagesBinding;
 import com.example.breedsapplication.fragment.image.list.ImagesFragment;
 import com.example.breedsapplication.fragment.image.list.adapter.ImageRecyclerViewAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ImagesActivity extends AppCompatActivity implements ImageRecyclerViewAdapter.OnItemSelected {
     public static final String BREED_EXTRA_KEY = "BreedKey";
     public static final String SUB_BREED_EXTRA_KEY = "SubBreedKey";
@@ -67,14 +70,15 @@ public class ImagesActivity extends AppCompatActivity implements ImageRecyclerVi
     }
 
     @Override
-    public void onItemSelected(int pos, String item, View root) {
+    public void onItemSelected(int pos, String item, List<String> images, View root) {
         View sharedImageView = root.findViewById(R.id.image);
         String transitionName = ViewCompat.getTransitionName(sharedImageView);
 
         Intent intent = new Intent(this, ImageActivity.class);
         intent.putExtra(ImageActivity.IMAGE_EXTRA_KEY, item);
         intent.putExtra(ImageActivity.BREED_EXTRA_KEY, breed);
-        intent.putExtra(ImageActivity.TRANSITION_EXTRA_KEY, transitionName);
+        intent.putStringArrayListExtra(
+                ImageActivity.IMAGE_LIST_EXTRA_KEY, (ArrayList<String>) images);
 
         ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
                 this,

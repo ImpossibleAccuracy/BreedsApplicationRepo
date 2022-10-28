@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/navigation_favorites"
-        android:name="com.example.breedsapplication.fragment.image.list.ImagesFragment"
+        android:name="com.example.breedsapplication.fragment.favorite.FavoritesFragment"
         android:label="@string/title_favorite"
         tools:layout="@layout/fragment_favorites" />
 </navigation>

@@ -66,7 +66,7 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageViewHold
 
         binding.getRoot().setOnClickListener(v -> {
             if (onItemSelected != null) {
-                onItemSelected.onItemSelected(position, image, v);
+                onItemSelected.onItemSelected(position, image, images, v);
             }
         });
     }
@@ -79,6 +79,6 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageViewHold
     }
 
     public interface OnItemSelected {
-        void onItemSelected(int pos, String item, View root);
+        void onItemSelected(int pos, String item, List<String> images, View root);
     }
 }

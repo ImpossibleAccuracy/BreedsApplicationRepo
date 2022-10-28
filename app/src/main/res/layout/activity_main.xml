@@ -21,7 +21,8 @@
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:theme="@style/Theme.BreedsApplication.Toolbar"
                 tools:menu="@menu/main_toolbar_menu"
                 tools:title="Title" />
         </com.google.android.material.appbar.AppBarLayout>
