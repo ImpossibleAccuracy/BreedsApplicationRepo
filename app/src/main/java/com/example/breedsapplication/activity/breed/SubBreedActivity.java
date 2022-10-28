@@ -7,14 +7,11 @@ import android.view.View;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityOptionsCompat;
-import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 
 import com.example.breedsapplication.R;
-import com.example.breedsapplication.activity.image.list.ImagesActivity;
+import com.example.breedsapplication.activity.image.ImagesActivity;
 import com.example.breedsapplication.databinding.ActivitySubBreedBinding;
-import com.example.breedsapplication.fragment.image.list.ImagesFragment;
 import com.example.breedsapplication.fragment.sub_breed.SubBreedFragment;
 import com.example.breedsapplication.model.Breed;
 

@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.example.breedsapplication.fragment.image.single.ImageItemFragment;
+
 import java.util.List;
 
 public class ImageListAdapter extends FragmentStateAdapter {
@@ -29,7 +31,7 @@ public class ImageListAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        return SimpleImageFragment
+        return ImageItemFragment
                 .newInstance(images.get(position));
     }
 

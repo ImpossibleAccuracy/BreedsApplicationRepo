@@ -1,28 +1,23 @@
-package com.example.breedsapplication.activity.image.list;
+package com.example.breedsapplication.activity.image;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityOptionsCompat;
-import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.breedsapplication.R;
-import com.example.breedsapplication.activity.image.single.ImageActivity;
 import com.example.breedsapplication.databinding.ActivityImagesBinding;
 import com.example.breedsapplication.fragment.image.list.ImagesFragment;
-import com.example.breedsapplication.fragment.image.list.adapter.ImageRecyclerViewAdapter;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class ImagesActivity extends AppCompatActivity implements ImageRecyclerViewAdapter.OnItemSelected {
+public class ImagesActivity extends AppCompatActivity {
     public static final String BREED_EXTRA_KEY = "BreedKey";
     public static final String SUB_BREED_EXTRA_KEY = "SubBreedKey";
+
+    public static int currentPosition;
 
     private ActivityImagesBinding binding;
 
@@ -34,6 +29,8 @@ public class ImagesActivity extends AppCompatActivity implements ImageRecyclerVi
         super.onCreate(savedInstanceState);
         WindowCompat.setDecorFitsSystemWindows(
                 getWindow(), false);
+
+        ImagesActivity.currentPosition = 0;
 
         binding = ActivityImagesBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -52,39 +49,20 @@ public class ImagesActivity extends AppCompatActivity implements ImageRecyclerVi
 
         if (savedInstanceState == null) {
             ImagesFragment fragment = ImagesFragment.newInstance(breed, subBreed);
-            fragment.setOnItemSelected(this);
 
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, fragment)
-                    .commitNow();
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction()
+                    .replace(R.id.container, fragment, ImagesFragment.class.getSimpleName())
+                    .commit();
         }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            finish();
+            onBackPressed();
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onItemSelected(int pos, String item, List<String> images, View root) {
-        View sharedImageView = root.findViewById(R.id.image);
-        String transitionName = ViewCompat.getTransitionName(sharedImageView);
-
-        Intent intent = new Intent(this, ImageActivity.class);
-        intent.putExtra(ImageActivity.IMAGE_EXTRA_KEY, item);
-        intent.putExtra(ImageActivity.BREED_EXTRA_KEY, breed);
-        intent.putStringArrayListExtra(
-                ImageActivity.IMAGE_LIST_EXTRA_KEY, (ArrayList<String>) images);
-
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                this,
-                sharedImageView,
-                transitionName);
-
-        startActivity(intent, options.toBundle());
     }
 }

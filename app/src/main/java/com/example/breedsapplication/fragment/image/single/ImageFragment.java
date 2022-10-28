@@ -1,19 +1,27 @@
 package com.example.breedsapplication.fragment.image.single;
 
 import android.os.Bundle;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.SharedElementCallback;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.breedsapplication.R;
+import com.example.breedsapplication.activity.image.ImagesActivity;
 import com.example.breedsapplication.databinding.FragmentImageBinding;
 import com.example.breedsapplication.fragment.image.single.adapter.ImageListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ImageFragment extends Fragment {
     private static final String IMAGE_EXTRA_KEY = "Image";
@@ -45,6 +53,8 @@ public class ImageFragment extends Fragment {
             image = args.getString(IMAGE_EXTRA_KEY);
             images = args.getStringArrayList(IMAGE_LIST_EXTRA_KEY);
         }
+
+        getActivity().setTheme(R.style.Theme_BreedsApplication_ImageFullScreen);
     }
 
     @Nullable
@@ -58,14 +68,42 @@ public class ImageFragment extends Fragment {
         adapter.setImages(images);
 
         binding.pager.setAdapter(adapter);
-        binding.pager.setCurrentItem(images.indexOf(image));
+        binding.pager.setCurrentItem(ImagesActivity.currentPosition, false);
+        binding.pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                ImagesActivity.currentPosition = position;
+            }
+        });
 
-        /*ViewCompat.setTransitionName(binding.image, transitionName);
-
-        Glide.with(requireContext())
-                .load(image)
-                .into(binding.image);*/
+        prepareSharedElementTransition();
+        if (savedInstanceState == null) {
+            postponeEnterTransition();
+        }
 
         return binding.getRoot();
+    }
+
+    private void prepareSharedElementTransition() {
+        Transition transition =
+                TransitionInflater.from(getContext())
+                        .inflateTransition(R.transition.image_shared_element_transition);
+        setSharedElementEnterTransition(transition);
+
+        setEnterSharedElementCallback(
+                new SharedElementCallback() {
+                    @Override
+                    public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+                        FragmentManager manager = getChildFragmentManager();
+                        Fragment currentFragment = manager.findFragmentByTag(
+                                String.format("f%s", ImagesActivity.currentPosition));
+                        View view = currentFragment.getView();
+                        if (view == null) {
+                            return;
+                        }
+
+                        sharedElements.put(names.get(0), view.findViewById(R.id.image));
+                    }
+                });
     }
 }
