@@ -1,7 +1,5 @@
 package com.example.breedsapplication.fragment.breed;
 
-import android.util.Log;
-
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -46,17 +44,18 @@ public class BreedViewModel extends ViewModel {
             }
 
             breedsLiveData.postValue(
-                breedResponse.getMessage()
-                    .entrySet()
-                    .stream()
-                    .map(pair -> new Breed(pair.getKey(), pair.getValue()))
-                    .collect(Collectors.toList()));
+                    breedResponse.getMessage()
+                            .entrySet()
+                            .stream()
+                            .map(pair -> new Breed(pair.getKey(), pair.getValue()))
+                            .collect(Collectors.toList()));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     private void onLoadError(String status) {
+        // TODO: display error in dialog
         throw new RuntimeException(
                 String.format("Loading error. Status: \"%s\"", status));
     }

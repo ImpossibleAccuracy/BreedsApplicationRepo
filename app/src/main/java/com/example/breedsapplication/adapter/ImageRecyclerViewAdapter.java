@@ -24,26 +24,21 @@ import com.example.breedsapplication.databinding.ItemImageBinding;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageViewHolder> {
+public class ImageRecyclerViewAdapter extends RecyclerAdapterWithContext<ImageViewHolder> {
     private List<String> images;
     private OnItemSelected onItemSelected;
 
     private final Fragment fragment;
-    private final LayoutInflater inflater;
     private final AtomicBoolean enterTransitionStarted = new AtomicBoolean(false);
 
     public ImageRecyclerViewAdapter(Fragment fragment) {
-        this.inflater = LayoutInflater.from(fragment.getContext());
+        super(fragment.getContext());
         this.fragment = fragment;
     }
 
     public ImageRecyclerViewAdapter(Fragment fragment, List<String> images) {
         this(fragment);
         this.images = images;
-    }
-
-    public Context getContext() {
-        return inflater.getContext();
     }
 
     public List<String> getImages() {
@@ -62,7 +57,7 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageViewHold
     @Override
     public ImageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         ItemImageBinding binding = ItemImageBinding
-                .inflate(inflater, parent, false);
+                .inflate(getLayoutInflater(), parent, false);
         return new ImageViewHolder(binding);
     }
 
@@ -115,7 +110,7 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageViewHold
         if (enterTransitionStarted.getAndSet(true)) {
             return;
         }
-        fragment.startPostponedEnterTransition();
+        fragment.getActivity().startPostponedEnterTransition();
     }
 
     public interface OnItemSelected {

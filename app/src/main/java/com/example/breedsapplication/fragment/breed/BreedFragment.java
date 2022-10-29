@@ -7,7 +7,6 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -45,28 +44,36 @@ public class BreedFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentBreedBinding.inflate(inflater, container, false);
-        final Context context = requireContext();
 
-        adapter = new BreedRecyclerViewAdapter(context);
-        // TODO: Fragment should notify the activity that item has been selected.
+        setupAdapter();
+        setupList();
+
+        return binding.getRoot();
+    }
+
+    private void setupAdapter() {
+        adapter = new BreedRecyclerViewAdapter(requireContext());
         adapter.setOnItemSelectedListener(onItemSelected);
         viewModel.getBreeds().observe(
-                getViewLifecycleOwner(), b -> {
+                getViewLifecycleOwner(),
+                b -> {
                     if (b != null) {
                         adapter.setBreeds(b);
                         // adapter.notifyItemRangeInserted(0, b.size());
-                        // TODO: remove sort
+                        // TODO: remove sort on release ver
                         sortBreeds(new Breed.SubListSizeComparator().reversed());
                     }
                 });
+    }
+
+    private void setupList() {
+        final Context context = requireContext();
 
         binding.recyclerView.setAdapter(adapter);
         binding.recyclerView.setLayoutManager(
                 new LinearLayoutManager(context));
         binding.recyclerView.addItemDecoration(
                 new DividerItemDecoration(context));
-
-        return binding.getRoot();
     }
 
     @Override

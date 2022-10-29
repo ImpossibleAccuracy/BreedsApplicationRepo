@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,7 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.breedsapplication.adapter.decoration.DividerItemDecoration;
-import com.example.breedsapplication.adapter.holder.SubBreedRecyclerViewAdapter;
+import com.example.breedsapplication.adapter.SubBreedRecyclerViewAdapter;
 import com.example.breedsapplication.databinding.FragmentSubBreedBinding;
 import com.example.breedsapplication.model.Breed;
 

@@ -59,14 +59,12 @@ public class ImageItemFragment extends Fragment {
         Glide.with(requireContext())
                 .load(image)
                 .listener(new RequestListener<>() {
-                    private final Fragment parentFragment = requireParentFragment();
-
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e,
                                                 Object model,
                                                 Target<Drawable> target,
                                                 boolean isFirstResource) {
-                        parentFragment.startPostponedEnterTransition();
+                        onImageLoaded();
                         return false;
                     }
 
@@ -76,12 +74,17 @@ public class ImageItemFragment extends Fragment {
                                                    Target<Drawable> target,
                                                    DataSource dataSource,
                                                    boolean isFirstResource) {
-                        parentFragment.startPostponedEnterTransition();
+                        onImageLoaded();
                         return false;
                     }
                 })
                 .into(binding.image);
 
         return binding.getRoot();
+    }
+
+    private void onImageLoaded() {
+        Fragment parentFragment = requireParentFragment();
+        parentFragment.getActivity().startPostponedEnterTransition();
     }
 }

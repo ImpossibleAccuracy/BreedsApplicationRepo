@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.SharedElementCallback;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -53,8 +54,6 @@ public class ImageFragment extends Fragment {
             image = args.getString(IMAGE_EXTRA_KEY);
             images = args.getStringArrayList(IMAGE_LIST_EXTRA_KEY);
         }
-
-        getActivity().setTheme(R.style.Theme_BreedsApplication_ImageFullScreen);
     }
 
     @Nullable
@@ -78,7 +77,7 @@ public class ImageFragment extends Fragment {
 
         prepareSharedElementTransition();
         if (savedInstanceState == null) {
-            postponeEnterTransition();
+//            postponeEnterTransition();
         }
 
         return binding.getRoot();
@@ -90,7 +89,8 @@ public class ImageFragment extends Fragment {
                         .inflateTransition(R.transition.image_shared_element_transition);
         setSharedElementEnterTransition(transition);
 
-        setEnterSharedElementCallback(
+        FragmentActivity activity = requireActivity();
+        activity.setEnterSharedElementCallback(
                 new SharedElementCallback() {
                     @Override
                     public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {

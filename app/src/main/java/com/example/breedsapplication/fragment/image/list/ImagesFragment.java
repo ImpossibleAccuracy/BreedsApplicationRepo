@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.SharedElementCallback;
-import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,15 +22,13 @@ import com.example.breedsapplication.activity.image.ImagesActivity;
 import com.example.breedsapplication.adapter.ImageRecyclerViewAdapter;
 import com.example.breedsapplication.adapter.decoration.GridSpacingItemDecoration;
 import com.example.breedsapplication.databinding.FragmentImagesBinding;
-import com.example.breedsapplication.fragment.image.single.ImageFragment;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-public class ImagesFragment extends Fragment implements ImageRecyclerViewAdapter.OnItemSelected {
+public class ImagesFragment extends Fragment {
     public static final String BREED_EXTRA_KEY = "Breed";
     public static final String SUB_BREED_EXTRA_KEY = "SubBreed";
 
@@ -40,6 +38,7 @@ public class ImagesFragment extends Fragment implements ImageRecyclerViewAdapter
 
     private String breed;
     private String subBreed;
+    private ImageRecyclerViewAdapter.OnItemSelected onItemSelected;
 
     private final Executor executor = Executors.newSingleThreadExecutor();
 
@@ -52,22 +51,6 @@ public class ImagesFragment extends Fragment implements ImageRecyclerViewAdapter
 
         imageFragment.setArguments(args);
         return imageFragment;
-    }
-
-    public String getBreed() {
-        return breed;
-    }
-
-    public void setBreed(String breed) {
-        this.breed = breed;
-    }
-
-    public String getSubBreed() {
-        return subBreed;
-    }
-
-    public void setSubBreed(String subBreed) {
-        this.subBreed = subBreed;
     }
 
     @Override
@@ -89,7 +72,7 @@ public class ImagesFragment extends Fragment implements ImageRecyclerViewAdapter
         binding = FragmentImagesBinding.inflate(inflater, container, false);
 
         adapter = new ImageRecyclerViewAdapter(this);
-        adapter.setOnItemSelectedListener(this);
+        adapter.setOnItemSelectedListener(onItemSelected);
         viewModel.getImageList().observe(getViewLifecycleOwner(), this::onImagesLoaded);
 
         binding.images.setAdapter(adapter);
@@ -104,7 +87,7 @@ public class ImagesFragment extends Fragment implements ImageRecyclerViewAdapter
 
         // Setup shared element transitions
         prepareTransitions();
-        postponeEnterTransition();
+//        postponeEnterTransition();
 
         return binding.getRoot();
     }
@@ -120,6 +103,12 @@ public class ImagesFragment extends Fragment implements ImageRecyclerViewAdapter
         }
 
         scrollToPosition();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 
     private void scrollToPosition() {
@@ -163,30 +152,6 @@ public class ImagesFragment extends Fragment implements ImageRecyclerViewAdapter
         }
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
-    }
-
-    @Override
-    public void onItemSelected(int pos, String item, List<String> images, View root) {
-        ImagesActivity.currentPosition = pos;
-
-        View sharedImageView = root.findViewById(R.id.image);
-        String transitionName = ViewCompat.getTransitionName(sharedImageView);
-        ImageFragment fragment = ImageFragment.newInstance(item, (ArrayList<String>) images);
-
-        // TODO: move <ImageFragment> to another activity
-        getParentFragmentManager()
-                .beginTransaction()
-                .setReorderingAllowed(true)
-                .addSharedElement(sharedImageView, transitionName)
-                .replace(R.id.container, fragment, ImageFragment.class.getSimpleName())
-                .addToBackStack(null)
-                .commit();
-    }
-
     private void loadImageList() {
         viewModel.loadImageList(breed, subBreed);
     }
@@ -197,11 +162,13 @@ public class ImagesFragment extends Fragment implements ImageRecyclerViewAdapter
                         .inflateTransition(R.transition.grid_exit_transition);
         setExitTransition(transition);
 
-        setExitSharedElementCallback(
+        FragmentActivity activity = requireActivity();
+        activity.setExitSharedElementCallback(
                 new SharedElementCallback() {
                     @Override
                     public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
                         // Locate the ViewHolder for the clicked position.
+                        // TODO: Current <viewholder> cannot be found. It currently located in another activity.
                         RecyclerView.ViewHolder selectedViewHolder = binding.images
                                 .findViewHolderForAdapterPosition(ImagesActivity.currentPosition);
                         if (selectedViewHolder == null) {
@@ -214,5 +181,28 @@ public class ImagesFragment extends Fragment implements ImageRecyclerViewAdapter
                                 selectedViewHolder.itemView.findViewById(R.id.image));
                     }
                 });
+    }
+
+    public String getBreed() {
+        return breed;
+    }
+
+    public void setBreed(String breed) {
+        this.breed = breed;
+    }
+
+    public String getSubBreed() {
+        return subBreed;
+    }
+
+    public void setSubBreed(String subBreed) {
+        this.subBreed = subBreed;
+    }
+
+    public void setOnItemSelected(ImageRecyclerViewAdapter.OnItemSelected onItemSelected) {
+        this.onItemSelected = onItemSelected;
+        if (adapter != null) {
+            adapter.setOnItemSelectedListener(onItemSelected);
+        }
     }
 }

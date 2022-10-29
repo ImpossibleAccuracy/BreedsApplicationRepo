@@ -1,4 +1,4 @@
-package com.example.breedsapplication.adapter.holder;
+package com.example.breedsapplication.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,23 +12,17 @@ import com.example.breedsapplication.databinding.ItemSubBreedBinding;
 import com.example.breedsapplication.fragment.sub_breed.SubBreedFragment;
 import com.example.breedsapplication.model.Breed;
 
-public class SubBreedRecyclerViewAdapter extends RecyclerView.Adapter<SubBreedViewHolder> {
-    private final LayoutInflater inflater;
-
+public class SubBreedRecyclerViewAdapter extends RecyclerAdapterWithContext<SubBreedViewHolder> {
     private Breed breed;
     private SubBreedFragment.OnItemSelected onItemSelected;
 
     public SubBreedRecyclerViewAdapter(Context context) {
-        this.inflater = LayoutInflater.from(context);
+        super(context);
     }
 
     public SubBreedRecyclerViewAdapter(Context context, Breed breed) {
         this(context);
         this.breed = breed;
-    }
-
-    public Context getContext() {
-        return inflater.getContext();
     }
 
     public Breed getBreed() {
@@ -47,7 +41,7 @@ public class SubBreedRecyclerViewAdapter extends RecyclerView.Adapter<SubBreedVi
     @Override
     public SubBreedViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         ItemSubBreedBinding binding = ItemSubBreedBinding
-                .inflate(inflater, parent, false);
+                .inflate(getLayoutInflater(), parent, false);
         return new SubBreedViewHolder(binding);
     }
 

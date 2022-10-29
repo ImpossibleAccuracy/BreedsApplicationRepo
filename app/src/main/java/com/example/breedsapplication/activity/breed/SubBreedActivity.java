@@ -5,17 +5,16 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.WindowCompat;
 
 import com.example.breedsapplication.R;
+import com.example.breedsapplication.activity.AppActivity;
 import com.example.breedsapplication.activity.image.ImagesActivity;
 import com.example.breedsapplication.databinding.ActivitySubBreedBinding;
 import com.example.breedsapplication.fragment.sub_breed.SubBreedFragment;
 import com.example.breedsapplication.model.Breed;
 
-public class SubBreedActivity extends AppCompatActivity implements SubBreedFragment.OnItemSelected {
+public class SubBreedActivity extends AppActivity implements SubBreedFragment.OnItemSelected {
     public static final String BREED_EXTRA_KEY = "BreedKey";
 
     private ActivitySubBreedBinding binding;
@@ -25,22 +24,11 @@ public class SubBreedActivity extends AppCompatActivity implements SubBreedFragm
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        WindowCompat.setDecorFitsSystemWindows(
-                getWindow(), false);
-
         binding = ActivitySubBreedBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        Intent intent = getIntent();
-        this.breed = (Breed) intent.getSerializableExtra(BREED_EXTRA_KEY);
-
-        setSupportActionBar(binding.toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle(this.breed.getName());
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setDisplayShowHomeEnabled(true);
-        }
+        binding.toolbar.setTitle(this.breed.getName());
+        setupToolbar(binding.toolbar);
 
         if (savedInstanceState == null) {
             SubBreedFragment fragment = SubBreedFragment.newInstance(breed);
@@ -53,12 +41,8 @@ public class SubBreedActivity extends AppCompatActivity implements SubBreedFragm
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-        }
-
-        return super.onOptionsItemSelected(item);
+    protected void parseIntent(Intent intent) {
+        this.breed = (Breed) intent.getSerializableExtra(BREED_EXTRA_KEY);
     }
 
     @Override

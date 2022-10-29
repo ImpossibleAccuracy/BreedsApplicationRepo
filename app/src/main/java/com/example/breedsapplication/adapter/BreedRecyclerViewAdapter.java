@@ -1,12 +1,10 @@
 package com.example.breedsapplication.adapter;
 
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.breedsapplication.R;
 import com.example.breedsapplication.databinding.ItemBreedBinding;
@@ -15,22 +13,17 @@ import com.example.breedsapplication.model.Breed;
 
 import java.util.List;
 
-public class BreedRecyclerViewAdapter extends RecyclerView.Adapter<BreedViewHolder> {
-    private final LayoutInflater inflater;
+public class BreedRecyclerViewAdapter extends RecyclerAdapterWithContext<BreedViewHolder> {
     private List<Breed> breeds;
     private OnItemSelected onItemSelected;
 
     public BreedRecyclerViewAdapter(Context context) {
-        this.inflater = LayoutInflater.from(context);
+        super(context);
     }
 
     public BreedRecyclerViewAdapter(Context context, List<Breed> breeds) {
-        this(context);
+        super(context);
         this.breeds = breeds;
-    }
-
-    public Context getContext() {
-        return inflater.getContext();
     }
 
     public List<Breed> getBreeds() {
@@ -49,7 +42,7 @@ public class BreedRecyclerViewAdapter extends RecyclerView.Adapter<BreedViewHold
     @Override
     public BreedViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         ItemBreedBinding binding = ItemBreedBinding
-                .inflate(inflater, parent, false);
+                .inflate(getLayoutInflater(), parent, false);
         return new BreedViewHolder(binding);
     }
 
