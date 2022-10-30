@@ -4,25 +4,28 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.view.ViewCompat;
 
 import com.example.breedsapplication.R;
 import com.example.breedsapplication.activity.AppActivity;
-import com.example.breedsapplication.adapter.ImageRecyclerViewAdapter;
+import com.example.breedsapplication.adapter.listener.OnImageSelected;
 import com.example.breedsapplication.databinding.ActivityImagesBinding;
 import com.example.breedsapplication.fragment.image.list.ImagesFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImagesActivity extends AppActivity implements ImageRecyclerViewAdapter.OnItemSelected {
+public class ImagesActivity extends AppActivity implements OnImageSelected {
+    private static final String CURRENT_POS_KEY = "CurrentPos";
     public static final String BREED_EXTRA_KEY = "BreedKey";
     public static final String SUB_BREED_EXTRA_KEY = "SubBreedKey";
 
     public static int currentPosition;
 
     private ActivityImagesBinding binding;
+    private ImagesFragment imagesFragment;
 
     private String breed;
     private String subBreed;
@@ -30,23 +33,39 @@ public class ImagesActivity extends AppActivity implements ImageRecyclerViewAdap
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ImagesActivity.currentPosition = 0;
 
         binding = ActivityImagesBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.toolbar.setTitle(this.breed);
-        setupToolbar(binding.toolbar);
+        setupToolbar(this.breed);
 
         if (savedInstanceState == null) {
-            ImagesFragment fragment = ImagesFragment.newInstance(breed, subBreed);
-            fragment.setOnItemSelected(this);
+            ImagesActivity.currentPosition = 0;
+
+            imagesFragment = ImagesFragment.newInstance(breed, subBreed);
 
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.container, fragment, ImagesFragment.class.getSimpleName())
+                    .replace(R.id.container, imagesFragment, ImagesFragment.class.getSimpleName())
                     .commit();
+        } else {
+            ImagesActivity.currentPosition =
+                    savedInstanceState.getInt(CURRENT_POS_KEY, 0);
+
+            imagesFragment = (ImagesFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.container);
+
+            if (imagesFragment == null)
+                throw new NullPointerException("Fragment not found.");
         }
+
+        imagesFragment.setOnItemSelected(this);
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putInt(CURRENT_POS_KEY, ImagesActivity.currentPosition);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -56,7 +75,7 @@ public class ImagesActivity extends AppActivity implements ImageRecyclerViewAdap
     }
 
     @Override
-    public void onItemSelected(int pos, String item, List<String> images, View root) {
+    public void onImageSelected(int pos, String item, List<String> images, View root) {
         ImagesActivity.currentPosition = pos;
 
         View sharedImageView = root.findViewById(R.id.image);

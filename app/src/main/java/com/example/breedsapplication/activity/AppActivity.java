@@ -3,12 +3,15 @@ package com.example.breedsapplication.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.WindowCompat;
+
+import com.example.breedsapplication.R;
 
 public abstract class AppActivity extends AppCompatActivity {
     /** Parse some data from input intent
@@ -19,16 +22,32 @@ public abstract class AppActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        WindowCompat.setDecorFitsSystemWindows(
-                getWindow(), false);
+//        WindowCompat.setDecorFitsSystemWindows(
+//                getWindow(), decorFitsSystemWindows());
         parseIntent(getIntent());
+    }
+
+    public boolean decorFitsSystemWindows() {
+        return false;
     }
 
     /**
      * Setup toolbar for make activity closable
-     * @param toolbar Toolbar view
      */
-    protected void setupToolbar(Toolbar toolbar) {
+    protected void setupToolbar() {
+        setupToolbar(null);
+    }
+
+    /**
+     * Setup toolbar for make activity closable
+     * @param title Title of toolbar
+     */
+    protected void setupToolbar(@Nullable String title) {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        if (title != null) {
+            toolbar.setTitle(title);
+        }
+
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {

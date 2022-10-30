@@ -76,9 +76,6 @@ public class ImageFragment extends Fragment {
         });
 
         prepareSharedElementTransition();
-        if (savedInstanceState == null) {
-//            postponeEnterTransition();
-        }
 
         return binding.getRoot();
     }

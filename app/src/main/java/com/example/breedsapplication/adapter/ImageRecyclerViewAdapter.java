@@ -1,16 +1,12 @@
 package com.example.breedsapplication.adapter;
 
-import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -19,6 +15,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.breedsapplication.activity.image.ImagesActivity;
 import com.example.breedsapplication.adapter.holder.ImageViewHolder;
+import com.example.breedsapplication.adapter.listener.OnImageSelected;
 import com.example.breedsapplication.databinding.ItemImageBinding;
 
 import java.util.List;
@@ -26,7 +23,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ImageRecyclerViewAdapter extends RecyclerAdapterWithContext<ImageViewHolder> {
     private List<String> images;
-    private OnItemSelected onItemSelected;
+    private OnImageSelected onImageSelected;
 
     private final Fragment fragment;
     private final AtomicBoolean enterTransitionStarted = new AtomicBoolean(false);
@@ -49,8 +46,8 @@ public class ImageRecyclerViewAdapter extends RecyclerAdapterWithContext<ImageVi
         this.images = images;
     }
 
-    public void setOnItemSelectedListener(OnItemSelected onItemSelected) {
-        this.onItemSelected = onItemSelected;
+    public void setOnItemSelectedListener(OnImageSelected onImageSelected) {
+        this.onImageSelected = onImageSelected;
     }
 
     @NonNull
@@ -90,8 +87,8 @@ public class ImageRecyclerViewAdapter extends RecyclerAdapterWithContext<ImageVi
                 .into(binding.image);
 
         binding.getRoot().setOnClickListener(v -> {
-            if (onItemSelected != null) {
-                onItemSelected.onItemSelected(position, image, images, v);
+            if (onImageSelected != null) {
+                onImageSelected.onImageSelected(position, image, images, v);
             }
         });
     }
@@ -103,7 +100,7 @@ public class ImageRecyclerViewAdapter extends RecyclerAdapterWithContext<ImageVi
         return images.size();
     }
 
-    public void onLoadCompleted(int position) {
+    private void onLoadCompleted(int position) {
         if (ImagesActivity.currentPosition != position) {
             return;
         }
@@ -111,9 +108,5 @@ public class ImageRecyclerViewAdapter extends RecyclerAdapterWithContext<ImageVi
             return;
         }
         fragment.getActivity().startPostponedEnterTransition();
-    }
-
-    public interface OnItemSelected {
-        void onItemSelected(int pos, String item, List<String> images, View root);
     }
 }

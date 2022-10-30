@@ -11,15 +11,18 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.breedsapplication.adapter.BreedRecyclerViewAdapter;
 import com.example.breedsapplication.adapter.decoration.DividerItemDecoration;
+import com.example.breedsapplication.adapter.listener.OnBreedSelected;
 import com.example.breedsapplication.databinding.FragmentBreedBinding;
 import com.example.breedsapplication.model.Breed;
 
 import java.util.Comparator;
+import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -28,7 +31,7 @@ public class BreedFragment extends Fragment {
     private FragmentBreedBinding binding;
     private BreedRecyclerViewAdapter adapter;
 
-    private BreedRecyclerViewAdapter.OnItemSelected onItemSelected;
+    private OnBreedSelected onBreedSelected;
 
     private final Handler mHandler = new Handler(Looper.getMainLooper());
     private final Executor executor = Executors.newSingleThreadExecutor();
@@ -53,15 +56,13 @@ public class BreedFragment extends Fragment {
 
     private void setupAdapter() {
         adapter = new BreedRecyclerViewAdapter(requireContext());
-        adapter.setOnItemSelectedListener(onItemSelected);
+        adapter.setOnItemSelectedListener(onBreedSelected);
         viewModel.getBreeds().observe(
                 getViewLifecycleOwner(),
                 b -> {
                     if (b != null) {
                         adapter.setBreeds(b);
-                        // adapter.notifyItemRangeInserted(0, b.size());
-                        // TODO: remove sort on release ver
-                        sortBreeds(new Breed.SubListSizeComparator().reversed());
+                        adapter.notifyItemRangeInserted(0, b.size());
                     }
                 });
     }
@@ -90,16 +91,14 @@ public class BreedFragment extends Fragment {
         binding = null;
     }
 
-    private void sortBreeds(Comparator<Breed> comparator) {
-        // TODO: remove on release ver
-        viewModel.sortBreeds(comparator);
-        mHandler.post(adapter::notifyDataSetChanged);
+    public LiveData<List<Breed>> getBreeds() {
+        return viewModel.getBreeds();
     }
 
-    public void setOnItemSelected(BreedRecyclerViewAdapter.OnItemSelected onItemSelected) {
-        this.onItemSelected = onItemSelected;
+    public void setOnItemSelected(OnBreedSelected onBreedSelected) {
+        this.onBreedSelected = onBreedSelected;
         if (adapter != null) {
-            adapter.setOnItemSelectedListener(onItemSelected);
+            adapter.setOnItemSelectedListener(onBreedSelected);
         }
     }
 }

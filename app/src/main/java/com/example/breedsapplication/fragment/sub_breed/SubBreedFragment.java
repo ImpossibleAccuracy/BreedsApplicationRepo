@@ -11,8 +11,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.breedsapplication.adapter.decoration.DividerItemDecoration;
 import com.example.breedsapplication.adapter.SubBreedRecyclerViewAdapter;
+import com.example.breedsapplication.adapter.decoration.DividerItemDecoration;
+import com.example.breedsapplication.adapter.listener.OnSubBreedSelected;
 import com.example.breedsapplication.databinding.FragmentSubBreedBinding;
 import com.example.breedsapplication.model.Breed;
 
@@ -21,7 +22,7 @@ public class SubBreedFragment extends Fragment {
     private SubBreedRecyclerViewAdapter adapter;
 
     private Breed breed;
-    private OnItemSelected onItemSelected;
+    private OnSubBreedSelected onSubBreedSelected;
 
     public static SubBreedFragment newInstance(Breed breed) {
         SubBreedFragment subBreedFragment = new SubBreedFragment();
@@ -34,16 +35,23 @@ public class SubBreedFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(@Nullable Bundle state) {
-        super.onCreate(state);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-        Bundle args = getArguments();
+        Bundle args =
+                (savedInstanceState == null ? getArguments() : savedInstanceState);
         if (args != null) {
             breed = (Breed) args.getSerializable(Breed.class.getSimpleName());
         }
 
         adapter = new SubBreedRecyclerViewAdapter(getContext(), breed);
-        adapter.setOnItemSelectedListener(onItemSelected);
+        adapter.setOnItemSelectedListener(onSubBreedSelected);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putSerializable(Breed.class.getSimpleName(), breed);
+        super.onSaveInstanceState(outState);
     }
 
     @Nullable
@@ -70,14 +78,11 @@ public class SubBreedFragment extends Fragment {
         }
     }
 
-    public void setOnItemSelected(OnItemSelected onItemSelected) {
-        this.onItemSelected = onItemSelected;
+    public void setOnItemSelected(OnSubBreedSelected onSubBreedSelected) {
+        this.onSubBreedSelected = onSubBreedSelected;
         if (adapter != null) {
-            adapter.setOnItemSelectedListener(onItemSelected);
+            adapter.setOnItemSelectedListener(onSubBreedSelected);
         }
     }
 
-    public interface OnItemSelected {
-        void onItemSelected(int pos, String item, View root);
-    }
 }

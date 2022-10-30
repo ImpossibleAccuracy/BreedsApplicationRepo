@@ -21,6 +21,7 @@ import com.example.breedsapplication.R;
 import com.example.breedsapplication.activity.image.ImagesActivity;
 import com.example.breedsapplication.adapter.ImageRecyclerViewAdapter;
 import com.example.breedsapplication.adapter.decoration.GridSpacingItemDecoration;
+import com.example.breedsapplication.adapter.listener.OnImageSelected;
 import com.example.breedsapplication.databinding.FragmentImagesBinding;
 
 import java.util.List;
@@ -38,7 +39,7 @@ public class ImagesFragment extends Fragment {
 
     private String breed;
     private String subBreed;
-    private ImageRecyclerViewAdapter.OnItemSelected onItemSelected;
+    private OnImageSelected onImageSelected;
 
     private final Executor executor = Executors.newSingleThreadExecutor();
 
@@ -72,7 +73,7 @@ public class ImagesFragment extends Fragment {
         binding = FragmentImagesBinding.inflate(inflater, container, false);
 
         adapter = new ImageRecyclerViewAdapter(this);
-        adapter.setOnItemSelectedListener(onItemSelected);
+        adapter.setOnItemSelectedListener(onImageSelected);
         viewModel.getImageList().observe(getViewLifecycleOwner(), this::onImagesLoaded);
 
         binding.images.setAdapter(adapter);
@@ -85,9 +86,7 @@ public class ImagesFragment extends Fragment {
                         (int) requireContext().getResources().getDimension(R.dimen.grid_spacing),
                         true));
 
-        // Setup shared element transitions
         prepareTransitions();
-//        postponeEnterTransition();
 
         return binding.getRoot();
     }
@@ -99,41 +98,8 @@ public class ImagesFragment extends Fragment {
         // Loading images from API
         if (viewModel.getImageList().getValue() == null ||
                 viewModel.getImageList().getValue().isEmpty()) {
-            executor.execute(this::loadImageList);
+            update();
         }
-
-        scrollToPosition();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
-    }
-
-    private void scrollToPosition() {
-        // Scroll to image if it's not on the screen
-        binding.images.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-            @Override
-            public void onLayoutChange(View v,
-                                       int left,
-                                       int top,
-                                       int right,
-                                       int bottom,
-                                       int oldLeft,
-                                       int oldTop,
-                                       int oldRight,
-                                       int oldBottom) {
-                binding.images.removeOnLayoutChangeListener(this);
-                final RecyclerView.LayoutManager layoutManager = binding.images.getLayoutManager();
-                View viewAtPosition = layoutManager.findViewByPosition(ImagesActivity.currentPosition);
-
-                if (viewAtPosition == null || layoutManager
-                        .isViewPartiallyVisible(viewAtPosition, false, true)) {
-                    binding.images.post(() -> layoutManager.scrollToPosition(ImagesActivity.currentPosition));
-                }
-            }
-        });
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -167,8 +133,6 @@ public class ImagesFragment extends Fragment {
                 new SharedElementCallback() {
                     @Override
                     public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
-                        // Locate the ViewHolder for the clicked position.
-                        // TODO: Current <viewholder> cannot be found. It currently located in another activity.
                         RecyclerView.ViewHolder selectedViewHolder = binding.images
                                 .findViewHolderForAdapterPosition(ImagesActivity.currentPosition);
                         if (selectedViewHolder == null) {
@@ -181,6 +145,12 @@ public class ImagesFragment extends Fragment {
                                 selectedViewHolder.itemView.findViewById(R.id.image));
                     }
                 });
+    }
+
+    public void update() {
+        if (viewModel != null) {
+            executor.execute(this::loadImageList);
+        }
     }
 
     public String getBreed() {
@@ -199,10 +169,10 @@ public class ImagesFragment extends Fragment {
         this.subBreed = subBreed;
     }
 
-    public void setOnItemSelected(ImageRecyclerViewAdapter.OnItemSelected onItemSelected) {
-        this.onItemSelected = onItemSelected;
+    public void setOnItemSelected(OnImageSelected onImageSelected) {
+        this.onImageSelected = onImageSelected;
         if (adapter != null) {
-            adapter.setOnItemSelectedListener(onItemSelected);
+            adapter.setOnItemSelectedListener(onImageSelected);
         }
     }
 }

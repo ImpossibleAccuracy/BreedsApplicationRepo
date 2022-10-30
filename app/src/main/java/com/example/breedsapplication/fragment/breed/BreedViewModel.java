@@ -28,7 +28,7 @@ public class BreedViewModel extends ViewModel {
     }
 
     /**
-     * Calls the API and gets the breeds list
+     * Calls the API and gets the breeds list.
      */
     public void loadBreeds() {
         Retrofit retrofit = APIClient.getRetrofit();
@@ -48,6 +48,8 @@ public class BreedViewModel extends ViewModel {
                             .entrySet()
                             .stream()
                             .map(pair -> new Breed(pair.getKey(), pair.getValue()))
+                            // TODO: remove sort on release ver
+                            .sorted(new Breed.SubListSizeComparator().reversed())
                             .collect(Collectors.toList()));
         } catch (IOException e) {
             e.printStackTrace();

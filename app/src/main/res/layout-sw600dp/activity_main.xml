@@ -3,11 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar"
@@ -18,12 +20,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:theme="@style/Theme.BreedsApplication.Toolbar"
-                tools:title="Title" />
+            <include layout="@layout/toolbar" />
         </com.google.android.material.appbar.AppBarLayout>
 
         <fragment

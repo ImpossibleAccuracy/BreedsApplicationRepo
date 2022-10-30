@@ -39,6 +39,11 @@ public class ImageActivity extends AppActivity {
     }
 
     @Override
+    public boolean decorFitsSystemWindows() {
+        return true;
+    }
+
+    @Override
     protected void parseIntent(Intent intent) {
         this.image = intent.getStringExtra(IMAGE_EXTRA_KEY);
         this.imageList = intent.getStringArrayListExtra(IMAGE_LIST_EXTRA_KEY);

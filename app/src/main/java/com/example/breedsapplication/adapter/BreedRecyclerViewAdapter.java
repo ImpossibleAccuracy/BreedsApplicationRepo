@@ -1,12 +1,12 @@
 package com.example.breedsapplication.adapter;
 
 import android.content.Context;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
 import com.example.breedsapplication.R;
+import com.example.breedsapplication.adapter.listener.OnBreedSelected;
 import com.example.breedsapplication.databinding.ItemBreedBinding;
 import com.example.breedsapplication.adapter.holder.BreedViewHolder;
 import com.example.breedsapplication.model.Breed;
@@ -15,7 +15,7 @@ import java.util.List;
 
 public class BreedRecyclerViewAdapter extends RecyclerAdapterWithContext<BreedViewHolder> {
     private List<Breed> breeds;
-    private OnItemSelected onItemSelected;
+    private OnBreedSelected onBreedSelected;
 
     public BreedRecyclerViewAdapter(Context context) {
         super(context);
@@ -34,8 +34,8 @@ public class BreedRecyclerViewAdapter extends RecyclerAdapterWithContext<BreedVi
         this.breeds = breeds;
     }
 
-    public void setOnItemSelectedListener(OnItemSelected onItemSelected) {
-        this.onItemSelected = onItemSelected;
+    public void setOnItemSelectedListener(OnBreedSelected onBreedSelected) {
+        this.onBreedSelected = onBreedSelected;
     }
 
     @NonNull
@@ -65,8 +65,8 @@ public class BreedRecyclerViewAdapter extends RecyclerAdapterWithContext<BreedVi
 
         binding.getRoot().setOnClickListener(
                 v -> {
-                    if (onItemSelected != null) {
-                        onItemSelected.onItemSelected(position, breed, v);
+                    if (onBreedSelected != null) {
+                        onBreedSelected.onBreedSelected(position, breed, v);
                     }
                 });
     }
@@ -78,7 +78,4 @@ public class BreedRecyclerViewAdapter extends RecyclerAdapterWithContext<BreedVi
         return breeds.size();
     }
 
-    public interface OnItemSelected {
-        void onItemSelected(int pos, Breed item, View root);
-    }
 }
