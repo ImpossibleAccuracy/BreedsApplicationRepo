@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.SharedElementCallback;
@@ -19,25 +20,32 @@ import com.example.breedsapplication.R;
 import com.example.breedsapplication.activity.image.ImagesActivity;
 import com.example.breedsapplication.adapter.ImageListAdapter;
 import com.example.breedsapplication.databinding.FragmentImageBinding;
+import com.example.breedsapplication.service.FavoriteService;
+import com.example.breedsapplication.service.FavoriteServiceDBImpl;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ImageFragment extends Fragment {
+public class ImageFragment extends Fragment implements View.OnClickListener {
+    private static final String BREED_EXTRA_KEY = "Breed";
     private static final String IMAGE_EXTRA_KEY = "Image";
     private static final String IMAGE_LIST_EXTRA_KEY = "ImageList";
 
     private ImageListAdapter adapter;
     private FragmentImageBinding binding;
+    private FavoriteService favoriteService;
 
+    private String breed;
     private String image;
     private List<String> images;
+    private boolean isFavorite;
 
-    public static ImageFragment newInstance(String image, ArrayList<String> images) {
+    public static ImageFragment newInstance(String breed, String image, ArrayList<String> images) {
         ImageFragment fragment = new ImageFragment();
 
         Bundle args = new Bundle();
+        args.putString(BREED_EXTRA_KEY, breed);
         args.putString(IMAGE_EXTRA_KEY, image);
         args.putStringArrayList(IMAGE_LIST_EXTRA_KEY, images);
 
@@ -51,9 +59,12 @@ public class ImageFragment extends Fragment {
 
         Bundle args = getArguments();
         if (args != null) {
+            breed = args.getString(BREED_EXTRA_KEY);
             image = args.getString(IMAGE_EXTRA_KEY);
             images = args.getStringArrayList(IMAGE_LIST_EXTRA_KEY);
         }
+
+        favoriteService = new FavoriteServiceDBImpl(requireContext());
     }
 
     @Nullable
@@ -62,6 +73,8 @@ public class ImageFragment extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         binding = FragmentImageBinding.inflate(inflater);
+
+        binding.fab.setOnClickListener(this);
 
         adapter = new ImageListAdapter(this);
         adapter.setImages(images);
@@ -72,12 +85,49 @@ public class ImageFragment extends Fragment {
             @Override
             public void onPageSelected(int position) {
                 ImagesActivity.currentPosition = position;
+                updateUI();
             }
         });
 
         prepareSharedElementTransition();
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        updateUI();
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.fab) {
+            if (isFavorite) {
+                favoriteService.remove(images.get(ImagesActivity.currentPosition));
+            } else {
+                favoriteService.insert(breed, images.get(ImagesActivity.currentPosition));
+            }
+            isFavorite = !isFavorite;
+            updateFab(isFavorite);
+        }
+    }
+
+    private void updateUI() {
+        isFavorite = favoriteService.isFavorite(
+                images.get(ImagesActivity.currentPosition));
+        updateFab(isFavorite);
+    }
+
+    private void updateFab(boolean isFavorite) {
+        @DrawableRes int res;
+        if (isFavorite) {
+            res = R.drawable.ic_baseline_favorite_24;
+        } else {
+            res = R.drawable.ic_baseline_favorite_border_24;
+        }
+
+        binding.fab.setImageResource(res);
     }
 
     private void prepareSharedElementTransition() {

@@ -24,6 +24,7 @@ import com.example.breedsapplication.adapter.decoration.GridSpacingItemDecoratio
 import com.example.breedsapplication.adapter.listener.OnImageSelected;
 import com.example.breedsapplication.databinding.FragmentImagesBinding;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executor;
@@ -32,6 +33,7 @@ import java.util.concurrent.Executors;
 public class ImagesFragment extends Fragment {
     public static final String BREED_EXTRA_KEY = "Breed";
     public static final String SUB_BREED_EXTRA_KEY = "SubBreed";
+    public static final String IMAGES_EXTRA_KEY = "ImagesKey";
 
     private ImagesViewModel viewModel;
     private FragmentImagesBinding binding;
@@ -43,12 +45,15 @@ public class ImagesFragment extends Fragment {
 
     private final Executor executor = Executors.newSingleThreadExecutor();
 
-    public static ImagesFragment newInstance(String breed, String subBreed) {
+    public static ImagesFragment newInstance(String breed,
+                                             String subBreed,
+                                             List<String> images) {
         ImagesFragment imageFragment = new ImagesFragment();
 
         Bundle args = new Bundle();
         args.putString(BREED_EXTRA_KEY, breed);
         args.putString(SUB_BREED_EXTRA_KEY, subBreed);
+        args.putStringArrayList(IMAGES_EXTRA_KEY, (ArrayList<String>) images);
 
         imageFragment.setArguments(args);
         return imageFragment;
@@ -64,6 +69,11 @@ public class ImagesFragment extends Fragment {
         if (args != null) {
             this.breed = args.getString(BREED_EXTRA_KEY);
             this.subBreed = args.getString(SUB_BREED_EXTRA_KEY);
+
+            List<String> images = args.getStringArrayList(IMAGES_EXTRA_KEY);
+            if (images != null) {
+                this.viewModel.loadImageList(images);
+            }
         }
     }
 

@@ -22,13 +22,7 @@ public abstract class AppActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        WindowCompat.setDecorFitsSystemWindows(
-//                getWindow(), decorFitsSystemWindows());
         parseIntent(getIntent());
-    }
-
-    public boolean decorFitsSystemWindows() {
-        return false;
     }
 
     /**

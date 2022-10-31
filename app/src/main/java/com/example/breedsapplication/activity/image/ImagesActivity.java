@@ -19,8 +19,10 @@ import java.util.List;
 
 public class ImagesActivity extends AppActivity implements OnImageSelected {
     private static final String CURRENT_POS_KEY = "CurrentPos";
+
     public static final String BREED_EXTRA_KEY = "BreedKey";
     public static final String SUB_BREED_EXTRA_KEY = "SubBreedKey";
+    public static final String IMAGES_EXTRA_KEY = "ImagesKey";
 
     public static int currentPosition;
 
@@ -29,6 +31,7 @@ public class ImagesActivity extends AppActivity implements OnImageSelected {
 
     private String breed;
     private String subBreed;
+    private List<String> images;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +45,7 @@ public class ImagesActivity extends AppActivity implements OnImageSelected {
         if (savedInstanceState == null) {
             ImagesActivity.currentPosition = 0;
 
-            imagesFragment = ImagesFragment.newInstance(breed, subBreed);
+            imagesFragment = ImagesFragment.newInstance(breed, subBreed, images);
 
             getSupportFragmentManager()
                     .beginTransaction()
@@ -72,6 +75,7 @@ public class ImagesActivity extends AppActivity implements OnImageSelected {
     protected void parseIntent(Intent intent) {
         this.breed = intent.getStringExtra(BREED_EXTRA_KEY);
         this.subBreed = intent.getStringExtra(SUB_BREED_EXTRA_KEY);
+        this.images = intent.getStringArrayListExtra(IMAGES_EXTRA_KEY);
     }
 
     @Override
@@ -82,6 +86,7 @@ public class ImagesActivity extends AppActivity implements OnImageSelected {
         String transitionName = ViewCompat.getTransitionName(sharedImageView);
 
         Intent intent = new Intent(this, ImageActivity.class);
+        intent.putExtra(ImageActivity.BREED_EXTRA_KEY, (subBreed == null ? breed : subBreed));
         intent.putExtra(ImageActivity.IMAGE_EXTRA_KEY, item);
         intent.putStringArrayListExtra(ImageActivity.IMAGE_LIST_EXTRA_KEY, (ArrayList<String>) images);
 

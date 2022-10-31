@@ -27,6 +27,10 @@ public class ImagesViewModel extends ViewModel {
         return imageList;
     }
 
+    public void loadImageList(List<String> data) {
+        this.imageList.setValue(data);
+    }
+
     public void loadImageList(String breed, String subBreed) {
         Retrofit retrofit = APIClient.getRetrofit();
         BreedsService service = retrofit.create(BreedsService.class);

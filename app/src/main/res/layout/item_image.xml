@@ -18,7 +18,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
-            tools:src="@drawable/hayasaka" />
+            android:scaleType="fitCenter" />
     </com.google.android.material.card.MaterialCardView>
 </LinearLayout>

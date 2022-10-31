@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.breedsapplication.R;
 import com.example.breedsapplication.activity.AppActivity;
@@ -14,11 +13,13 @@ import com.example.breedsapplication.fragment.image.single.ImageFragment;
 import java.util.ArrayList;
 
 public class ImageActivity extends AppActivity {
+    public static final String BREED_EXTRA_KEY = "Breed";
     public static final String IMAGE_EXTRA_KEY = "Image";
     public static final String IMAGE_LIST_EXTRA_KEY = "ImageList";
 
     private ActivityImageBinding binding;
 
+    private String breed;
     private String image;
     private ArrayList<String> imageList;
 
@@ -33,18 +34,14 @@ public class ImageActivity extends AppActivity {
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.container, ImageFragment.newInstance(image, imageList))
+                    .replace(R.id.container, ImageFragment.newInstance(breed, image, imageList))
                     .commit();
         }
     }
 
     @Override
-    public boolean decorFitsSystemWindows() {
-        return true;
-    }
-
-    @Override
     protected void parseIntent(Intent intent) {
+        this.breed = intent.getStringExtra(BREED_EXTRA_KEY);
         this.image = intent.getStringExtra(IMAGE_EXTRA_KEY);
         this.imageList = intent.getStringArrayListExtra(IMAGE_LIST_EXTRA_KEY);
     }
